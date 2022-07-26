@@ -7,17 +7,17 @@ import (
 	"time"
 
 	"github.com/spf13/viper"
-	"github.com/variadico/noti/service/bearychat"
-	"github.com/variadico/noti/service/keybase"
-	"github.com/variadico/noti/service/mattermost"
-	"github.com/variadico/noti/service/pushbullet"
-	"github.com/variadico/noti/service/pushover"
-	"github.com/variadico/noti/service/pushsafer"
-	"github.com/variadico/noti/service/simplepush"
-	"github.com/variadico/noti/service/slack"
-	"github.com/variadico/noti/service/telegram"
-	"github.com/variadico/noti/service/twilio"
-	"github.com/variadico/noti/service/zulip"
+	"github.com/subvillion/noti/service/bearychat"
+	"github.com/subvillion/noti/service/keybase"
+	"github.com/subvillion/noti/service/mattermost"
+	"github.com/subvillion/noti/service/pushbullet"
+	"github.com/subvillion/noti/service/pushover"
+	"github.com/subvillion/noti/service/pushsafer"
+	"github.com/subvillion/noti/service/simplepush"
+	"github.com/subvillion/noti/service/slack"
+	"github.com/subvillion/noti/service/telegram"
+	"github.com/subvillion/noti/service/twilio"
+	"github.com/subvillion/noti/service/zulip"
 )
 
 var httpClient = &http.Client{Timeout: 30 * time.Second}

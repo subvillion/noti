@@ -29,7 +29,7 @@ func TestNoti(t *testing.T) {
 			t.Error(out)
 			t.Error("Missing name of latest version")
 		}
-		if !strings.Contains(out, "Download: https://github.com/variadico/noti/releases") {
+		if !strings.Contains(out, "Download: https://github.com/subvillion/noti/releases") {
 			t.Error(out)
 			t.Error("Missing latest download link")
 		}

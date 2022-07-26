@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
-	"github.com/variadico/vbs"
 )
 
 // Configuration Precedence
@@ -229,7 +229,7 @@ func configureApp(v *viper.Viper, flags *pflag.FlagSet) error {
 	fileFlag, _ := flags.GetString("file")
 	if err := setupConfigFile(fileFlag, v); err != nil {
 		// Not the end of the world if we can't read the config file.
-		vbs.Println(err)
+		log.Println(err)
 	}
 
 	if flags == nil {

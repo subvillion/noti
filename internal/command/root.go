@@ -15,11 +15,10 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
-	"github.com/variadico/vbs"
 )
 
 // Draft releases and prereleases are not returned by this endpoint.
-const githubReleasesURL = "https://api.github.com/repos/variadico/noti/releases/latest"
+const githubReleasesURL = "https://api.github.com/repos/subvillion/noti/releases/latest"
 
 // notification is the interface for all notifications.
 type notification interface {
@@ -65,27 +64,30 @@ func InitFlags(flags *pflag.FlagSet) {
 	flags.IntP("pwatch", "w", -1, "Monitor a process by PID and trigger a notification when the pid disappears.")
 
 	flags.StringP("file", "f", "", "Path to noti.yaml configuration file.")
-	flags.BoolVar(&vbs.Enabled, "verbose", false, "Enable verbose mode.")
+	// flags.BoolVar(&vbs.Enabled, "verbose", false, "Enable verbose mode.")
 	flags.BoolP("version", "v", false, "Print noti version and exit.")
 	flags.BoolP("help", "h", false, "Print noti help and exit.")
 }
 
 func rootMain(cmd *cobra.Command, args []string) error {
-	vbs.Println("os.Args:", os.Args)
+	// vbs.Println("os.Args:", os.Args)
+	log.Println("os.Args:", os.Args)
 
 	v := viper.New()
 	if err := configureApp(v, cmd.Flags()); err != nil {
-		vbs.Println("Failed to configure:", err)
+		// vbs.Println
+		log.Println("Failed to configure:", err)
 	}
 
-	if vbs.Enabled {
-		printEnv()
-	}
+	// if vbs.Enabled {
+	// 	printEnv()
+	// }
 
 	if showVer, _ := cmd.Flags().GetBool("version"); showVer {
 		fmt.Println("noti version", Version)
 		if latest, dl, err := latestRelease(githubReleasesURL); err != nil {
-			vbs.Println("Failed get latest release:", err)
+			// vbs.Println("Failed get latest release:", err)
+			log.Println("Failed get latest release:", err)
 		} else if latest != Version {
 			fmt.Println("Latest:", latest)
 			fmt.Println("Download:", dl)
@@ -102,7 +104,8 @@ func rootMain(cmd *cobra.Command, args []string) error {
 		return err
 	}
 	if title == "" {
-		vbs.Println("Title from flags is empty, getting title from command name")
+		// vbs.Println
+		log.Println("Title from flags is empty, getting title from command name")
 		title = commandName(args)
 	}
 	v.Set("title", title)
@@ -112,7 +115,8 @@ func rootMain(cmd *cobra.Command, args []string) error {
 		cmdTime time.Duration
 	)
 	if pid, _ := cmd.Flags().GetInt("pwatch"); pid != -1 {
-		vbs.Println("Watching PID:", pid)
+		// vbs.Println("Watching PID:", pid)
+		log.Println("Watching PID:", pid)
 		if err := pollPID(pid, 2*time.Second); err != nil {
 			return err
 		}
@@ -124,7 +128,8 @@ func rootMain(cmd *cobra.Command, args []string) error {
 		}
 		v.Set("message", string(buf))
 	} else {
-		vbs.Println("Running command:", args)
+		// vbs.Println("Running command:", args)
+		log.Println("Running command:", args)
 		timeBefore := time.Now()
 		cmdErr = runCommand(args, os.Stdin, os.Stdout, os.Stderr)
 		cmdTime = time.Since(timeBefore).Round(time.Second)
@@ -137,21 +142,28 @@ func rootMain(cmd *cobra.Command, args []string) error {
 		v.Set("message", fmt.Sprintf("%s (%s)", v.GetString("message"), cmdTime))
 	}
 
-	vbs.Println("Title:", v.GetString("title"))
-	vbs.Println("Message:", v.GetString("message"))
-	vbs.Println("Time:", enabledTime(v, cmd.Flags()))
+	// vbs.Println("Title:", v.GetString("title"))
+	// vbs.Println("Message:", v.GetString("message"))
+	// vbs.Println("Time:", enabledTime(v, cmd.Flags()))
+	log.Println("Title:", v.GetString("title"))
+	log.Println("Message:", v.GetString("message"))
+	log.Println("Time:", enabledTime(v, cmd.Flags()))
 
 	enabled := enabledServices(v, cmd.Flags())
-	vbs.Println("Services:", enabled)
-	vbs.Println("Viper:", v.AllSettings())
+	// vbs.Println("Services:", enabled)
+	// vbs.Println("Viper:", v.AllSettings())
+	log.Println("Services:", enabled)
+	log.Println("Viper:", v.AllSettings())
 	notis := getNotifications(v, enabled)
 
-	vbs.Println(len(notis), "notifications queued")
+	// vbs.Println(len(notis), "notifications queued")
+	log.Println(len(notis), "notifications queued")
 	for _, n := range notis {
 		if err := n.Send(); err != nil {
 			log.Println(err)
 		} else {
-			vbs.Printf("Sent: %T\n", n)
+			// vbs.Printf("Sent: %T\n", n)
+			log.Printf("Sent: %T\n", n)
 		}
 	}
 

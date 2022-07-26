@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/spf13/viper"
-	"github.com/variadico/noti/service/nsuser"
-	"github.com/variadico/noti/service/say"
+	"github.com/subvillion/noti/service/nsuser"
+	"github.com/subvillion/noti/service/say"
 )
 
 func getBanner(title, message string, v *viper.Viper) notification {

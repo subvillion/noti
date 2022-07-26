@@ -36,6 +36,6 @@ wanted] issues.
 
 Thanks for helping make Noti better!
 
-[dev]: https://github.com/variadico/noti/tree/dev
-[bug reports]: https://github.com/variadico/noti/issues?q=is%3Aopen+is%3Aissue+label%3Abug
-[help wanted]: https://github.com/variadico/noti/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22+
+[dev]: https://github.com/subvillion/noti/tree/dev
+[bug reports]: https://github.com/subvillion/noti/issues?q=is%3Aopen+is%3Aissue+label%3Abug
+[help wanted]: https://github.com/subvillion/noti/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22+

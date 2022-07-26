@@ -40,7 +40,7 @@ The `master` branch always contains the latest tagged release.
 
 ```shell
 # Install the latest version on any platform.
-go get -u github.com/variadico/noti/cmd/noti
+go get -u github.com/subvillion/noti/cmd/noti
 
 # Install the latest version on macOS.
 brew install noti
@@ -110,7 +110,7 @@ curl -L $(curl -s https://api.github.com/repos/variadico/noti/releases/latest | 
     telegram.chatId to be set.
 
 --twilio
-    Trigger a Twilio notification.  This requires twilio.authToken, twilio.accountSid, 
+    Trigger a Twilio notification.  This requires twilio.authToken, twilio.accountSid,
     twilio.numberFrom and twilio.numberTo to be set.
 
 -w , --pwatch
@@ -279,19 +279,19 @@ chatId
 TWILIO
 
 AuthToken
-    Twilio access token. Log into your Twilio account and copy the AuthToken from your 
+    Twilio access token. Log into your Twilio account and copy the AuthToken from your
     project dashboard.
 
 accountSid
-    Twilio account id. Log into your Twilio account and copy the accountSid from your 
+    Twilio account id. Log into your Twilio account and copy the accountSid from your
     project dashboard.
 
 numberTo
-    This parameter determines the destination phone number for your SMS message. 
+    This parameter determines the destination phone number for your SMS message.
     Format this number with a '+' and a country code, e.g., +16175551212
 
 numberFrom
-    From specifies the Twilio phone number, short code, or Messaging Service that sends 
+    From specifies the Twilio phone number, short code, or Messaging Service that sends
     this message.
     This must be a Twilio phone number that you own,
     formatted with a '+' and country code, e.g. +16175551212 (E.164 format)
@@ -436,7 +436,7 @@ Log into your [Twilio] account. Next go to the "Project info" tab. look for "ACC
 
 ## Reporting bugs
 
-Report bugs on GitHub at https://github.com/variadico/noti/issues.
+Report bugs on GitHub at https://github.com/subvillion/noti/issues.
 
 
 [Settings]: https://www.pushbullet.com/#settings
