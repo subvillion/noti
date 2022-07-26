@@ -1,0 +1,51 @@
+version: "3"
+
+vars:
+  APP_NAME:
+    sh: ls cmd
+  VERSION:
+    sh: git describe --tags
+    ignore_error: true
+  BUILD:
+    sh: git rev-parse --short HEAD
+    ignore_error: true
+  LDFLAGS: -mod=vendor -a --trimpath -ldflags "-X=main.version={{.VERSION}} -X=main.build={{.BUILD}} -s -w"
+  LDFLAGS_DEV: -mod=vendor -v -ldflags "-X=main.version={{.VERSION}} -X=main.build={{.BUILD}} -s -w"
+
+tasks:
+  default:
+    deps:
+      - task: dev
+
+  release:
+    cmds:
+      - go build {{.LDFLAGS}} -o {{.APP_NAME}} ./cmd/{{.APP_NAME}}
+      - upx -9 -q {{.APP_NAME}}
+      - upx -t {{.APP_NAME}}
+    env:
+      GOOS: "linux"
+      GOARCH: "amd64"
+      # CGO_ENABLED: 0
+
+  dev:
+    cmds:
+      - go build {{.LDFLAGS_DEV}} -o {{.APP_NAME}}-dev ./cmd/{{.APP_NAME}}
+      - ./noti-dev -m message -t title --gotify
+    env:
+      #  CGO_ENABLED: 0
+
+  test:
+    cmds:
+      - go test -v -cover -race `go list ./... | grep -v "noti/tests"`
+
+  deps:
+    cmds:
+      - go mod tidy
+      - go get -u ./...
+      - go mod download
+      - go mod vendor
+
+  clean:
+    cmds:
+      - go clean ./cmd/{{.APP_NAME}}
+      - rm -f {{.APP_NAME}} {{.APP_NAME}}-dev app

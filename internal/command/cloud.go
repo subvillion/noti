@@ -8,6 +8,7 @@ import (
 
 	"github.com/spf13/viper"
 	"github.com/subvillion/noti/service/bearychat"
+	"github.com/subvillion/noti/service/gotify"
 	"github.com/subvillion/noti/service/keybase"
 	"github.com/subvillion/noti/service/mattermost"
 	"github.com/subvillion/noti/service/pushbullet"
@@ -152,5 +153,16 @@ func getTwilio(title, message string, v *viper.Viper) notification {
 		NumberFrom: v.GetString("twilio.numberFrom"),
 		AccountSid: v.GetString("twilio.accountSid"),
 		AuthToken:  v.GetString("twilio.authToken"),
+	}
+}
+
+func getGotify(title, message string, v *viper.Viper) notification {
+	return &gotify.Notification{
+		Message: message,
+		Title:   title,
+		AppURL:  v.GetString("gotify.appurl"),
+		Token:   v.GetString("gotify.token"),
+
+		Client: httpClient,
 	}
 }

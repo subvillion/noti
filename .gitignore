@@ -5,3 +5,5 @@ release/
 *.swp
 .noti.yaml
 !internal/command/testdata/.noti.yaml
+.vscode/
+noti-dev

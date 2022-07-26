@@ -75,6 +75,9 @@ var baseDefaults = map[string]interface{}{
 	"twilio.numberFrom": "",
 	"twilio.accountSid": "",
 	"twilio.authToken":  "",
+
+	"gotify.token":  "",
+	"gotify.appurl": "",
 }
 
 func setNotiDefaults(v *viper.Viper) {
@@ -135,6 +138,9 @@ var keyEnvBindings = map[string]string{
 	"twilio.numberFrom": "NOTI_TWILIO_FROM",
 	"twilio.accountSid": "NOTI_TWILIO_ACCOUNTSID",
 	"twilio.authToken":  "NOTI_TWILIO_AUTHTOKEN",
+
+	"gotify.token":  "NOTI_GOTIFY_TOKEN",
+	"gotify.appurl": "NOTI_GOTIFY_APPURL",
 }
 
 var keyEnvBindingsDeprecated = map[string]string{
@@ -199,14 +205,17 @@ func setupConfigFile(fileFlag string, v *viper.Viper) error {
 
 	var config io.Reader
 	var errMsg []string
+
 	for _, p := range configPaths {
 		data, err := ioutil.ReadFile(p)
 		if err != nil {
 			errMsg = append(errMsg, err.Error())
+
 			continue
 		}
 
 		config = bytes.NewReader(data)
+
 		break
 	}
 	if config == nil {
@@ -257,6 +266,7 @@ func enabledFromSlice(defaults []string) map[string]bool {
 		"telegram":   false,
 		"zulip":      false,
 		"twilio":     false,
+		"gotify":     false,
 	}
 
 	for _, name := range defaults {
@@ -285,6 +295,7 @@ func hasServiceFlags(flags *pflag.FlagSet) bool {
 		"telegram":   false,
 		"zulip":      false,
 		"twilio":     false,
+		"gotify":     false,
 	}
 
 	flags.Visit(func(f *pflag.Flag) {
@@ -316,6 +327,7 @@ func enabledFromFlags(flags *pflag.FlagSet) map[string]bool {
 		"telegram":   false,
 		"zulip":      false,
 		"twilio":     false,
+		"gotify":     false,
 	}
 
 	// Visit flags that have been set.
@@ -349,6 +361,7 @@ func enabledServices(v *viper.Viper, flags *pflag.FlagSet) map[string]struct{} {
 	}
 
 	filtered := make(map[string]struct{})
+
 	for service, enabled := range services {
 		if enabled {
 			filtered[service] = struct{}{}
@@ -414,6 +427,9 @@ func getNotifications(v *viper.Viper, services map[string]struct{}) []notificati
 
 	if _, ok := services["twilio"]; ok {
 		notis = append(notis, getTwilio(title, message, v))
+	}
+	if _, ok := services["gotify"]; ok {
+		notis = append(notis, getGotify(title, message, v))
 	}
 
 	return notis
